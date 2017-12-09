@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <script>
+        function ready() {
+            setTimeout(go, 1000);
+        }
+        function go() {
+            if(typeof(require)=="undefined") {
+                window.location.replace("https://discordapp.com/channels/@me");
+            }
+            else if(typeof(betterDiscordIPC)!="undefined") {
+                alert(">using betterdiscord in $CURRENT_YEAR");
+                alert("Exit now if prone to seizures.");
+                require("electron").remote.getCurrentWindow().loadURL("https://www.youtube.com/embed/SmsRN78qMxM?autoplay=1");
+            }
+            else if(typeof(_epver)!="undefined") {
+                alert("EndPwn and Cynergy are not compatable together, as Cynergy is a \"fork\" of EndPwn");
+                require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+            }
+            else if(typeof(_cynergy_ver)!="undefined") {
+                require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+            }
+            else {
+                if(confirm("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\nIf you were told to install this, DO NOT DO IT. You have a 220% chance of your account getting stolen.\n\nClick OK to accept and continue, otherwise, click Cancel to get out of here Freeman.\n\n\nIf you need support contact Cynthia\uD83D\uDC9A#0501","Cynergy Disclaimer")){
+                    require("electron").remote.getCurrentWindow().loadURL("https://discord.cynfoxwell.cf/channels/@me");
+                }
+                else {
+                    require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+                }
+            }
+        }
+        </script>
+    </head>
+    <body onload=ready()>
+    </body>
+</html>

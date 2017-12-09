@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Cynergy Injector</title>
+
+        <!-- [B]ootstrap -->
+        <link rel="stylesheet" href="./assets/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+        <!-- [B]ootstrap "required" metadata -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <style>
+            #bg {
+                width:100%;
+                position:absolute;
+                top:0;
+                left:0;
+                height:100%;
+                z-index: -9999;
+            }
+
+            #greets {
+                position: absolute;
+                font-family: monospace;
+                font-size:16px;
+                bottom:32px;
+                overflow:hidden;
+                font-style: bold;
+            }
+        </style>
+
+        <script src="https://rawgit.com/a1k0n/jsxm/master/xmeffects.js"></script>
+        <script src="https://rawgit.com/a1k0n/jsxm/master/xm.js"></script>
+
+        <script src="./cynergy.js"></script>
+
+        <script type="text/javascript">
+            var injectme = function(){
+                if(confirm("This is your last chance to back out. It's all over from here if you continue.","Final Chance To Leave")){
+                    setup();
+                }else{
+                    require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+                }
+            }
+
+            if(typeof(_cynergy_ver) !== "undefined"){
+                setup();
+            }
+
+            function loadXMAndInit(xmdata) {
+                if (!XMPlayer.load(xmdata)) {
+                    return;
+                }
+                XMPlayer.play();
+                return XMPlayer.xm;
+            }
+            function downloadXM(uri) {
+                var xmReq = new XMLHttpRequest();
+                xmReq.open("GET", uri, true);
+                xmReq.responseType = "arraybuffer";
+                xmReq.onload = function (xmEvent) {
+                    var arrayBuffer = xmReq.response;
+                    if (arrayBuffer) {
+                        loadXMAndInit(arrayBuffer);
+                    } else {
+                        console.log("unable to load", uri);
+                    }
+                };
+                xmReq.send(null);
+            }
+            window.onload = function() {
+                XMPlayer.init();
+                setTimeout(()=>downloadXM("./assets/infected_-_mapedit_3_6kg.xm"),2500);
+            }
+        </script>
+    </head>
+    <body style="margin:0; font-family:monospace;">
+        <main role="main">
+            <div class="jumbotron" style="text-align:center; background-color:rgba(28,30,34,0.5);">
+                <h1 class="display-3 rainbowme">Cynergy</h1>
+                <p class="lead">Welcome to the Cynergy Injector.</p>
+                <p><button class="btn btn-lg btn-primary" role="button" onclick="injectme()">Inject me &#x1F489;&#x1F629;</button></p>
+            </div>
+
+            <div id="logger" class="rainbowme" style="background-color:rgba(0,0,0,0.5); font-size:16px; width:100%; padding:4px;">Log starts here</div>
+        </main>
+
+        <!-- canvases -->
+        <canvas id="bg"></canvas>
+        <footer id="greets" class="rainbowme"><marquee>Cynergy, Copyright &copy; 2017 Cynthia Foxwell - Greets to: justquant, Utopia, Memework&trade;, Foxwells Garden - Song: infected_-_mapedit_3_6kg.xm, Composed and tracked by LHS/DHS.&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;Sticking around too long after injection? If you're using a regular browser, leave now. Else run _cyn_clean() and _cyn_restart() then reinject. If errors, contact Cynthia&#x1F49A;#0501 on Discord.</marquee></footer>
+
+        <script>
+            let c = document.getElementById("bg");
+            let ctx = c.getContext("2d");
+
+            c.height = window.innerHeight;
+            c.width = window.innerWidth;
+
+            var font_size = 8;
+			var columns = c.width/font_size;
+			var drops = [];
+			for(var x = 0; x < columns; x++) drops[x] = 1;
+			function draw()
+			{
+				ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+				ctx.fillRect(0, 0, c.width, c.height);
+				ctx.fillStyle = `hsl(${(new Date().getTime()%360)},75%,75%)`;
+				for(var i = 0; i < drops.length; i++)
+				{
+					ctx.fillRect((i*font_size)-font_size, (drops[i]*font_size)-font_size, font_size, font_size);
+					if(drops[i]*font_size > c.height && Math.random() > 0.975) drops[i] = 0;
+					drops[i]++;
+                }
+
+                let r = document.getElementsByClassName("rainbowme");
+                for(let i=0;i<r.length;i++){
+                    r[i].style.color = `hsl(${(new Date().getTime()/10%360)},100%,50%)`;
+                }
+			}
+            setInterval(draw, 33);
+        </script>
+    </body>
+</html>
