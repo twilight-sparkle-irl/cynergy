@@ -184,7 +184,6 @@ var dropfiles = function () {
         fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/main.js', mclient.responseText);
     }
     mclient.send();
-    gclient.send();
     var lclient = new XMLHttpRequest();
     lclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/linq.js');
     lclient.onreadystatechange = function() {
