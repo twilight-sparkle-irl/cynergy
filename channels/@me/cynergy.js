@@ -148,7 +148,7 @@ var dropfiles = function () {
 
     //   blob of bullshit for i.js start
     // imports/helper definitions
-    var ec = `if(fs){fs=require("original-fs");}else{var fs=require("original-fs");};var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${approot().split("app.asar")[0]+"/"}";`;
+    var ec = `if(fs){fs=require("original-fs");}else{var fs=require("original-fs");};var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${approot().split("app.asar")[0].replace(/\\/g,"/")+"/"}";`;
     // restart function
     var rs = 'var _cyn_restart=function(){app.relaunch();app.quit()}';
     // cache clear function
