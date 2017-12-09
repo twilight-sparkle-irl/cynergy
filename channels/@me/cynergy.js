@@ -28,7 +28,8 @@ var cacheclear = function () {
 }
 
 var cleanup = function () {
-	_win.loadURL('https://discordapp.com/channels/@me');
+    let dir = approot().split('app.asar')[0].replace(/\\/g,"/");
+	_win.loadURL(`https://${(dir.toLowerCase().indexOf("discordcanary") > -1 && "canary.") || (dir.toLowerCase().indexOf("discordptb") > -1 && "ptb.") || ""}discordapp.com/channels/@me`);
 }
 
 var setup = function () {

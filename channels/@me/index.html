@@ -43,12 +43,12 @@
                 if(confirm("This is your last chance to back out. It's all over from here if you continue.","Final Chance To Leave")){
                     setup();
                 }else{
-                    require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+                    cleanup();
                 }
             }
 
             var goback = function(){
-                require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+                cleanup();
             }
 
             if(typeof(_cynergy_ver) !== "undefined"){
