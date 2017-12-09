@@ -41,7 +41,16 @@ var setup = function () {
 	setTimeout(function () {
 		if (typeof(_cynergy_ver) == "undefined")
 		{
-			logging.innerText += "Cynergy is not installed\n";
+            logging.innerText += "Cynergy is not installed\n";
+            logging.innerText += "Injecting dom-ready listener into app.asar\n";
+            try {
+                asarpwn();
+            } catch (e) {
+                logging.innerText += 'ASARPwn failed.\nIf you are on Linux, try running';
+                logging.innerText += ` chmod -R 777 ${approot().split('app.asar')[0]}`;
+                logging.innerText += ".\nIf that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
+                return;
+            }
 		}
         else {
             if (_cynergy_ver == cyn_ver) {
@@ -49,17 +58,6 @@ var setup = function () {
                 cleanup();
                 return;
             }
-        }
-
-        logging.innerText += "Attempting asar extraction...\n";
-        try{
-            asarpwn_drop();
-            asarpwn();
-        }catch(e){
-            logging.innerText += 'ASARPwn failed.\nIf you are on Linux, try running';
-            logging.innerText += ` chmod -R 777 ${approot().split('app.asar')[0]}`;
-            logging.innerText += ".\nIf that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
-            return;
         }
 
 		logging.innerText += "Injecting WEBAPP_ENDPOINT override into settings.json\n";
@@ -91,66 +89,16 @@ var endpoint_restore = function () {
 	fs.writeFileSync(settingsjson(), JSON.stringify(settings));
 };
 
-var asarpwn_drop = function () {
-	if (!fs.existsSync(approot().split('app.asar')[0] + '/cynergy')){
-        fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy');
-    }
-    if (!fs.existsSync(approot().split('app.asar')[0] + '/cynergy/lib')){
-        fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy/lib');
-    }
-    if (!fs.existsSync(approot().split('app.asar')[0] + '/cynergy/lib/asar')){
-        fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy/lib/asar');
-    }
-
-    var asar1 = new XMLHttpRequest();
-    asar1.open('GET', 'https://rawgit.com/electron/asar/master/lib/asar.js');
-    asar1.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/asar.js', asar1.responseText);
-    }
-    asar1.send();
-
-    var asar2 = new XMLHttpRequest();
-    asar2.open('GET', 'https://rawgit.com/electron/asar/master/lib/crawlfs.js');
-    asar2.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/crawlfs.js', asar2.responseText);
-    }
-    asar2.send();
-
-    var asar3 = new XMLHttpRequest();
-    asar3.open('GET', 'https://rawgit.com/electron/asar/master/lib/disk.js');
-    asar3.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/disk.js', asar3.responseText);
-    }
-    asar3.send();
-
-    var asar4 = new XMLHttpRequest();
-    asar4.open('GET', 'https://rawgit.com/electron/asar/master/lib/filesystem.js');
-    asar4.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/filesystem.js', asar4.responseText);
-    }
-    asar4.send();
-
-    var asar5 = new XMLHttpRequest();
-    asar5.open('GET', 'https://rawgit.com/electron/asar/master/lib/snapshot.js');
-    asar5.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/snapshot.js', asar5.responseText);
-    }
-    asar5.send();
+var asarpwn = function() {
+    var bdata = new Buffer(fs.readFileSync(remote.app.getAppPath()));
+    bdata.write("mainWindow.webContents.on('dom-ready', function () {require('../i').x(mainWindow)});//", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
+    fs.writeFileSync(remote.app.getAppPath(), bdata);
 };
 
-var asarpwn = function(){
-    let asar = require(approot().split('app.asar')[0] + '/cynergy/lib/asar/asar.js');
-    try{
-        asar.extractAll(approot().split('app.asar')[0]+"/app.asar",approot().split('app.asar')[0] + '/app');
-        _fs.renameSync(approot().split('app.asar')[0]+"/app.asar",approot().split('app.asar')[0]+"/original_app.asar");
-    }catch(e){
-        console.error("asar extraction failed: "+e);
-    }
-}
-
-var asarunpwn = function () {
-    _fs.rmdirSync(approot().split('original_app.asar')[0],approot().split('original_app.asar')[0] + '/../app');
-    _fs.renameSync(approot().split('original_app.asar')[0]+"/original_app.asar",approot().split('app.asar')[0]+"/app.asar");
+var asarunpwn = function() {
+    var bdata = new Buffer(fs.readFileSync(remote.app.getAppPath()));
+    bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('../i').x(mainWindow)});//"));
+    fs.writeFileSync(remote.app.getAppPath(), bdata);
 }
 
 var data = function () {
@@ -221,33 +169,28 @@ var dropfiles = function () {
             fs.writeFileSync(data() + 'style.css', client.responseText);
         }
         client.send();
-    }
+    }*/
     var eclient = new XMLHttpRequest();
-    eclient.open('GET', 'https://cynfoxwell.cf/cynergy/libs/epapi.js');
+    eclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/epapi.js');
     eclient.onreadystatechange = function() {
         if (eclient.readyState === 4) {
-            fs.writeFileSync(approot().split('app.asar')[0] + 'cynergy/epapi.js', eclient.responseText);
+            fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/epapi.js', eclient.responseText);
         }
     }
     eclient.send();
     var mclient = new XMLHttpRequest();
-    mclient.open('GET', 'https://cynfoxwell.cf/cynergy/libs/main.js');
+    mclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/main.js');
     mclient.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + 'cynergy/main.js', mclient.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/main.js', mclient.responseText);
     }
     mclient.send();
-    var gclient = new XMLHttpRequest();
-    gclient.open('GET', 'http://apo.wds.us/plugins/guild_scrollbar.js');
-    gclient.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + 'cynergy/plugins/guild_scrollbar.js', gclient.responseText);
-    }
     gclient.send();
     var lclient = new XMLHttpRequest();
-    lclient.open('GET', 'https://cynfoxwell.cf/cynergy/libs/linq.js');
+    lclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/linq.js');
     lclient.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + 'cynergy/lib/linq.js', lclient.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/linq.js', lclient.responseText);
     }
-    lclient.send();*/
+    lclient.send();
     fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/legal.txt', license);
     fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/styles/style.css', "/* custom css here */");
 }
