@@ -14,7 +14,7 @@
  * Memework(tm) - Discord datamining
  */
 
-let cyn_ver = 1;
+let cyn_ver = 2;
 
 let electron = require("electron").remote;
 let remote = electron;
@@ -28,7 +28,7 @@ var cacheclear = function () {
 }
 
 var cleanup = function () {
-	_win.loadURL('https://canary.discordapp.com/channels/@me');
+	_win.loadURL('https://discordapp.com/channels/@me');
 }
 
 var setup = function () {

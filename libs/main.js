@@ -15,7 +15,7 @@ function asarinject(sig, inj) {
 try {
     asarinject(
         "\x0A      webPreferences: {\x0A        blinkFeatures: 'EnumerateDevices,AudioOutputDevices'\x0A      }\x0A    };",
-        "webPreferences:{blinkFeatures:'EnumerateDevices,AudioOutputDevices',preload:__dirname+'/../p.js'}}; "
+        "webPreferences:{blinkFeatures:'EnumerateDevices,AudioOutputDevices',preload:__dirname+'/../cynergy/p.js'}}; "
     );
     alert('A bootstrap patch has just been applied. Press OK to restart Discord.', 'EndPwn');
     _cyn_restart();
@@ -44,7 +44,7 @@ bdwatcher=null,bdtag=null,setupCSS=function(n){var e=fs.readFileSync(n,"utf-8");
 var results=wc.findFunc("SELF_XSS_HEADER");wc.get(results[results.length-1].i).consoleWarning=function(e){};
 
 // load epapi.js
-window._epapi = require(_cyn_data + "/cynergy/epapi");
+window._epapi = require(_cyn_data + "epapi");
 
 // start the api
 $api.go();
