@@ -192,10 +192,10 @@ exports.go = function () {
 
             /===/
 
-            if (fs.existsSync(_epdata + '/lib')) {
-                fs.readdirSync(_epdata + '/lib').forEach(function (x) {
+            if (fs.existsSync(_cyn_data + '/lib')) {
+                fs.readdirSync(_cyn_data + '/lib').forEach(function (x) {
                     try {
-                        var lib = require(_epdata + '/lib/' + x);
+                        var lib = require(_cyn_data + '/lib/' + x);
                         global['_lib' + lib.name] = lib;
                     }
                     catch (e) {
@@ -203,9 +203,9 @@ exports.go = function () {
                     }
                 });
             }
-            fs.readdirSync(_epdata + '/plugins').forEach(function (x) {
+            fs.readdirSync(_cyn_data + '/plugins').forEach(function (x) {
                 try {
-                    require(_epdata + '/plugins/' + x).start();
+                    require(_cyn_data + '/plugins/' + x).start();
                 }
                 catch (e) {
                     console.warn(x + ' contains errors.\n\n' + e);
@@ -228,14 +228,16 @@ exports.go = function () {
     }
 }
 
+let appdata = el.app.getAppPath().replace(/\\/g,"/");
+
 var settings = {
     get: function (k) {
-        return JSON.parse(fs.readFileSync(_epdata + '/settings.json', 'utf8'))[k];
+        return JSON.parse(fs.readFileSync(appdata + '/settings.json', 'utf8'))[k];
     },
     set: function (k, v) {
-        var o = JSON.parse(fs.readFileSync(_epdata + '/settings.json', 'utf8'));
+        var o = JSON.parse(fs.readFileSync(appdata + '/settings.json', 'utf8'));
         o[k] = v;
-        fs.writeFileSync(_epdata + '/settings.json', JSON.stringify(o, null, 2));
+        fs.writeFileSync(_cyn_data + '/settings.json', JSON.stringify(o, null, 2));
         return v;
     }
 }
@@ -244,7 +246,7 @@ var settings = {
 // This means we have to do retarded shit like manually search for and extract the token from the SQLite database
 // If we had access to some sort of SQLite lib, we could do this in a much more elegant way, but this works so who cares
 function token() {
-	return fs.readFileSync(_epdata + "/Local Storage/https_discordapp.com_0.localstorage", 'utf8')
+	return fs.readFileSync(appdata + "/Local Storage/https_discordapp.com_0.localstorage", 'utf8')
 		.match(/M\0(?:(?!\.)[--z]\0){23}\.\0(?:(?!\.)[--z]\0){6}\.\0(?:(?!\.)[--z]\0){27}|m\0f\0a\0\.\0(?:(?!\.)[--z]\0){84}/)[0]
 		.replaceAll('\0', '');
 }

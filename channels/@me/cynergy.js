@@ -171,7 +171,7 @@ var dropfiles = function () {
     }
     catch(e)
     {
-        _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/autoexec.js', 'setupCSS(_cyn_data + "/cynergy/styles/style.css");\nconsole.log("Hello, world!");');
+        _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/autoexec.js', 'setupCSS(_cyn_data + "/styles/style.css");\nconsole.log("Hello, world!");');
     }
     /*try
     {
