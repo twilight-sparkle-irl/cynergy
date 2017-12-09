@@ -94,7 +94,7 @@ var setup = function () {
 
 var endpoint_setup = function () {
 	var settings = JSON.parse(fs.readFileSync(settingsjson(), "UTF8"));
-	settings.WEBAPP_ENDPOINT="https://cynfoxwell.cf/cynergy";
+	settings.WEBAPP_ENDPOINT="https://cynergy.cynfoxwell.cf";
 	fs.writeFileSync(settingsjson(), JSON.stringify(settings));
 };
 
