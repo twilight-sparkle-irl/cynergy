@@ -56,10 +56,9 @@ var setup = function () {
             asarpwn_drop();
             asarpwn();
         }catch(e){
-            logging.style.color = 'red';
-            logging.innerText += 'ASARPwn failed. If you are on Linux, try running';
+            logging.innerText += 'ASARPwn failed.\nIf you are on Linux, try running';
             logging.innerText += ` chmod -R 777 ${approot().split('app.asar')[0]}`;
-            logging.innerText += ". If that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
+            logging.innerText += ".\nIf that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
             return;
         }
 
@@ -106,41 +105,41 @@ var asarpwn_drop = function () {
     var asar1 = new XMLHttpRequest();
     asar1.open('GET', 'https://rawgit.com/electron/asar/master/lib/asar.js');
     asar1.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/libs/asar/asar.js', asar1.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/asar.js', asar1.responseText);
     }
     asar1.send();
 
     var asar2 = new XMLHttpRequest();
     asar2.open('GET', 'https://rawgit.com/electron/asar/master/lib/crawlfs.js');
     asar2.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/libs/asar/crawlfs.js', asar2.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/crawlfs.js', asar2.responseText);
     }
     asar2.send();
 
     var asar3 = new XMLHttpRequest();
     asar3.open('GET', 'https://rawgit.com/electron/asar/master/lib/disk.js');
     asar3.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/libs/asar/disk.js', asar3.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/disk.js', asar3.responseText);
     }
     asar3.send();
 
     var asar4 = new XMLHttpRequest();
     asar4.open('GET', 'https://rawgit.com/electron/asar/master/lib/filesystem.js');
     asar4.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/libs/asar/filesystem.js', asar4.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/filesystem.js', asar4.responseText);
     }
     asar4.send();
 
     var asar5 = new XMLHttpRequest();
     asar5.open('GET', 'https://rawgit.com/electron/asar/master/lib/snapshot.js');
     asar5.onreadystatechange = function() {
-        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/libs/asar/snapshot.js', asar5.responseText);
+        fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/asar/snapshot.js', asar5.responseText);
     }
     asar5.send();
 };
 
 var asarpwn = function(){
-    let asar = require(approot().split('app.asar')[0] + '/cynergy/libs/asar/asar.js');
+    let asar = require(approot().split('app.asar')[0] + '/cynergy/lib/asar/asar.js');
     try{
         asar.extractAll(approot().split('app.asar')[0]+"/app.asar",approot().split('app.asar')[0] + '/app');
         _fs.renameSync(approot().split('app.asar')[0]+"/app.asar",approot().split('app.asar')[0]+"/original_app.asar");
