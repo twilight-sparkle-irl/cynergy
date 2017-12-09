@@ -47,6 +47,10 @@
                 }
             }
 
+            var goback = function(){
+                require("electron").remote.getCurrentWindow().loadURL("https://discordapp.com/channels/@me");
+            }
+
             if(typeof(_cynergy_ver) !== "undefined"){
                 setup();
             }
@@ -83,7 +87,9 @@
             <div class="jumbotron" style="text-align:center; background-color:rgba(28,30,34,0.5);">
                 <h1 class="display-3 rainbowme">Cynergy</h1>
                 <p class="lead">Welcome to the Cynergy Injector.</p>
-                <p><button class="btn btn-lg btn-primary" role="button" onclick="injectme()">Inject me &#x1F489;&#x1F629;</button></p>
+                <p><button class="btn btn-lg btn-info" role="button" onclick="goback()">Back to Discord</button></p>
+                <p><button class="btn btn-lg btn-success" role="button" onclick="injectme()">Inject me &#x1F489;&#x1F629;</button></p>
+                <p><button class="btn btn-lg btn-warning" role="button" onclick="asarunpwn()">Fix asar file</button></p>
             </div>
 
             <div id="logger" class="rainbowme" style="background-color:rgba(0,0,0,0.5); font-size:16px; width:100%; padding:4px;">Log starts here</div>
