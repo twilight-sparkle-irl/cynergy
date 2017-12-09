@@ -51,10 +51,6 @@
                 cleanup();
             }
 
-            if(typeof(_cynergy_ver) !== "undefined"){
-                setup();
-            }
-
             function loadXMAndInit(xmdata) {
                 if (!XMPlayer.load(xmdata)) {
                     return;
@@ -80,6 +76,12 @@
                 XMPlayer.init();
                 setTimeout(()=>downloadXM("./assets/infected_-_mapedit_3_6kg.xm"),2500);
             }
+
+            setTimeout(()=>{
+                if(typeof(_cynergy_ver) !== "undefined"){
+                    setup();
+                }
+            },2000);
         </script>
     </head>
     <body style="margin:0; font-family:monospace;">
