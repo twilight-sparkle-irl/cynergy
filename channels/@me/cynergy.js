@@ -148,7 +148,7 @@ var dropfiles = function () {
 
     //   blob of bullshit for i.js start
     // imports/helper definitions
-    var ec = 'var fs=require("original-fs");var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data=approot().split("app.asar")[0] + "\\";';
+    var ec = 'if(fs){fs=require("original-fs");}else{var fs=require("original-fs");};var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data=approot().split("app.asar")[0] + "/";';
     // restart function
     var rs = 'var _cyn_restart=function(){app.relaunch();app.quit()}';
     // cache clear function
@@ -156,7 +156,7 @@ var dropfiles = function () {
     // continue to discord function
     var ct = 'var _cyn_continue=function(){win.loadURL("https://canary.discordapp.com/channels/@me")}';
     // bootstrap
-    var pl = `var fs=require('fs');exports.x=function(win){win.webContents.executeJavaScript('${ec}var _cynergy_ver=${cyn_ver};${rs};${cc};${ct};if(window.location.hostname.includes("discordapp.com")){require(_cyn_data + "/main")}');}`;
+    var pl = `if(fs){fs=require("original-fs");}else{var fs=require("original-fs");};exports.x=function(win){win.webContents.executeJavaScript('${ec}var _cynergy_ver=${cyn_ver};${rs};${cc};${ct};if(window.location.hostname.includes("discordapp.com")){require(_cyn_data + "/main")}');}`;
     //   end i.js cyst
 
     fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/i.js', pl);
