@@ -94,7 +94,7 @@ var endpoint_restore = function () {
 
 var asarpwn = function() {
     var bdata = new Buffer(_fs.readFileSync(remote.app.getAppPath()));
-    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0].replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
+    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${data() + '/cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
     _fs.writeFileSync(remote.app.getAppPath(), bdata);
 };
 
@@ -103,16 +103,10 @@ var asarunpwn = function() {
     logging.innerText += "\nUndoing asarpwn...\n";
     var bdata = new Buffer(_fs.readFileSync(remote.app.getAppPath()));
     try{
-        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('../i').x(mainWindow)});//"));
-    }catch(e){}
-    try{
-        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('./cynergy/i').x(mainWindow)});//"));
-    }catch(e){}
-    try{
-        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0] + '/cynergy/i.js'}').x(mainWindow)});//`));
-    }catch(e){}
-    try{
         bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0].replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`));
+    }catch(e){}
+    try{
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${data() + '/cynergy/i.js'}').x(mainWindow)});//`));
     }catch(e){}
     _fs.writeFileSync(remote.app.getAppPath(), bdata);
 }
@@ -134,24 +128,24 @@ var asar = function () {
 }
 
 var dropfiles = function () {
-    if (!_fs.existsSync(approot().split('app.asar')[0] + '/cynergy')){
-        _fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy');
+    if (!_fs.existsSync(data() + '/cynergy')){
+        _fs.mkdirSync(data() + '/cynergy');
     }
-    if (!_fs.existsSync(approot().split('app.asar')[0] + '/cynergy/styles')){
-        _fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy/styles');
+    if (!_fs.existsSync(data() + '/cynergy/styles')){
+        _fs.mkdirSync(data() + '/cynergy/styles');
     }
-    if (!_fs.existsSync(approot().split('app.asar')[0] + '/cynergy/plugins')){
-        _fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy/plugins');
+    if (!_fs.existsSync(data() + '/cynergy/plugins')){
+        _fs.mkdirSync(data() + '/cynergy/plugins');
     }
-    if (!_fs.existsSync(approot().split('app.asar')[0] + '/cynergy/lib')){
-        _fs.mkdirSync(approot().split('app.asar')[0] + '/cynergy/lib');
+    if (!_fs.existsSync(data() + '/cynergy/lib')){
+        _fs.mkdirSync(data() + '/cynergy/lib');
     }
 
     var license = 'BeautifulDiscord\n\nThe MIT License (MIT)\n\nCopyright (c) 2016 leovoel\n\nPermission is hereby granted, free of charge, to any person obtaining a\ncopy of this software and associated documentation files (the "Software"),\nto deal in the Software without restriction, including without limitation\nthe rights to use, copy, modify, merge, publish, distribute, sublicense,\nand/or sell copies of the Software, and to permit persons to whom the\nSoftware is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS\nOR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER\nDEALINGS IN THE SOFTWARE.';
 
     //   blob of bullshit for i.js start
     // imports/helper definitions
-    var ec = `var fs=require("original-fs");var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${approot().split("app.asar")[0].replace(/\\/g,"/")+"/cynergy/"}";`;
+    var ec = `var fs=require("original-fs");var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${data()+"/cynergy/"}";`;
     // restart function
     var rs = 'var _cyn_restart=function(){app.relaunch();app.quit()}';
     // cache clear function
@@ -162,16 +156,16 @@ var dropfiles = function () {
     var pl = `var fs=require("original-fs");exports.x=function(win){win.webContents.executeJavaScript('${ec}var _cynergy_ver=${cyn_ver};${rs};${cc};${ct};if(window.location.hostname.includes("discordapp.com")){require(_cyn_data + "/main")}');}`;
     //   end i.js cyst
 
-    _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/i.js', pl);
-    _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/p.js', '// todo');
+    _fs.writeFileSync(data() + '/cynergy/i.js', pl);
+    _fs.writeFileSync(data() + '/cynergy/p.js', '// todo');
 
     try
     {
-        _fs.readFileSync(approot().split('app.asar')[0] + '/cynergy/autoexec.js');
+        _fs.readFileSync(data() + '/cynergy/autoexec.js');
     }
     catch(e)
     {
-        _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/autoexec.js', 'setupCSS(_cyn_data + "/styles/style.css");\nconsole.log("Hello, world!");');
+        _fs.writeFileSync(data() + '/cynergy/autoexec.js', 'setupCSS(_cyn_data + "/styles/style.css");\nconsole.log("Hello, world!");');
     }
     /*try
     {
@@ -190,24 +184,24 @@ var dropfiles = function () {
     eclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/epapi.js');
     eclient.onreadystatechange = function() {
         if (eclient.readyState === 4) {
-            _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/epapi.js', eclient.responseText);
+            _fs.writeFileSync(data() + '/cynergy/epapi.js', eclient.responseText);
         }
     }
     eclient.send();
     var mclient = new XMLHttpRequest();
     mclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/main.js');
     mclient.onreadystatechange = function() {
-        _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/main.js', mclient.responseText);
+        _fs.writeFileSync(data() + '/cynergy/main.js', mclient.responseText);
     }
     mclient.send();
     var lclient = new XMLHttpRequest();
     lclient.open('GET', 'https://cynergy.cynfoxwell.cf/libs/linq.js');
     lclient.onreadystatechange = function() {
-        _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/lib/linq.js', lclient.responseText);
+        _fs.writeFileSync(data() + '/cynergy/lib/linq.js', lclient.responseText);
     }
     lclient.send();
-    _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/legal.txt', license);
-    _fs.writeFileSync(approot().split('app.asar')[0] + '/cynergy/styles/style.css', "/* custom css here */");
+    _fs.writeFileSync(data() + '/cynergy/legal.txt', license);
+    _fs.writeFileSync(data() + '/cynergy/styles/style.css', "/* custom css here */");
 }
 
 var crash = function () {
