@@ -91,7 +91,7 @@ var endpoint_restore = function () {
 
 var asarpwn = function() {
     var bdata = new Buffer(fs.readFileSync(remote.app.getAppPath()));
-    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0] + '/cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
+    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0].replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
     fs.writeFileSync(remote.app.getAppPath(), bdata);
 };
 
@@ -107,6 +107,9 @@ var asarunpwn = function() {
     }catch(e){}
     try{
         bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0] + '/cynergy/i.js'}').x(mainWindow)});//`));
+    }catch(e){}
+    try{
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0].replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`));
     }catch(e){}
     fs.writeFileSync(remote.app.getAppPath(), bdata);
 }
