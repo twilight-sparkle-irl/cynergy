@@ -14,7 +14,7 @@
  * Memework(tm) - Discord datamining
  */
 
-let cyn_ver = 2;
+let cyn_ver = 3;
 
 let electron = require("electron").remote;
 let remote = electron;
@@ -94,7 +94,7 @@ var endpoint_restore = function () {
 
 var asarpwn = function() {
     var bdata = new Buffer(_fs.readFileSync(remote.app.getAppPath()));
-    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${data() + '/cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
+    bdata.write(`mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + 'cynergy/i.js'}').x(mainWindow)});//`, bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe"));
     _fs.writeFileSync(remote.app.getAppPath(), bdata);
 };
 
@@ -103,10 +103,10 @@ var asarunpwn = function() {
     logging.innerText += "\nUndoing asarpwn...\n";
     var bdata = new Buffer(_fs.readFileSync(remote.app.getAppPath()));
     try{
-        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0].replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`));
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${data() + '/cynergy/i.js'}').x(mainWindow)});//`));
     }catch(e){}
     try{
-        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${data() + '/cynergy/i.js'}').x(mainWindow)});//`));
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});//`));
     }catch(e){}
     _fs.writeFileSync(remote.app.getAppPath(), bdata);
 }
@@ -145,7 +145,7 @@ var dropfiles = function () {
 
     //   blob of bullshit for i.js start
     // imports/helper definitions
-    var ec = `var fs=require("original-fs");var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${data()+"/cynergy/"}";`;
+    var ec = `var fs=require("original-fs");var el=require("electron").remote;var win=el.getCurrentWindow();var app=el.app;var _cyn_data="${data().replace(/\\/g,"/")+"cynergy/"}";`;
     // restart function
     var rs = 'var _cyn_restart=function(){app.relaunch();app.quit()}';
     // cache clear function
