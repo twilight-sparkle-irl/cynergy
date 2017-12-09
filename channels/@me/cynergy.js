@@ -29,7 +29,9 @@ var cacheclear = function () {
 
 var cleanup = function () {
     let dir = approot().split('app.asar')[0].replace(/\\/g,"/");
-	window.location.replace(`https://${(dir.toLowerCase().indexOf("discordcanary") > -1 && "canary.") || (dir.toLowerCase().indexOf("discordptb") > -1 && "ptb.") || ""}discordapp.com/channels/@me`);
+    document.head = document.createElement('head');
+    document.body = document.createElement('body');
+	require("electron").remote.getCurrentWindow().loadURL(`https://${(dir.toLowerCase().indexOf("discordcanary") > -1 && "canary.") || (dir.toLowerCase().indexOf("discordptb") > -1 && "ptb.") || ""}discordapp.com/channels/@me`);
 }
 
 var setup = function () {
