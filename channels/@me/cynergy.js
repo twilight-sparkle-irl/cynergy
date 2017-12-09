@@ -99,9 +99,15 @@ var asarunpwn = function() {
     logging = document.getElementById('logger');
     logging.innerText += "\nUndoing asarpwn...\n";
     var bdata = new Buffer(fs.readFileSync(remote.app.getAppPath()));
-    bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('../i').x(mainWindow)});//"));
-    bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('./cynergy/i').x(mainWindow)});//"));
-    bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0] + '/cynergy/i.js'}').x(mainWindow)});//`));
+    try{
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('../i').x(mainWindow)});//"));
+    }catch(e){}
+    try{
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf("mainWindow.webContents.on('dom-ready', function () {require('./cynergy/i').x(mainWindow)});//"));
+    }catch(e){}
+    try{
+        bdata.write("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A    // Prevent navigation whe", bdata.indexOf(`mainWindow.webContents.on('dom-ready', function () {require('${approot().split('app.asar')[0] + '/cynergy/i.js'}').x(mainWindow)});//`));
+    }catch(e){}
     fs.writeFileSync(remote.app.getAppPath(), bdata);
 }
 
