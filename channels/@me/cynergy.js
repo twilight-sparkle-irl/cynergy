@@ -107,9 +107,9 @@ var new_injector = function () {
     //Until they remove this listener, we'll be replacing it for now, later we'll readd it.
     let dirlisting = _fs.readdirSync(data());
     let latestver = dirlisting.filter(d=>d.indexOf("0.0.") > -1);
-    let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`);
+    let mainScreen = new Buffer(_fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`));
 
-    mainScreen = mainScreen.replace("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});","  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});");
+    mainScreen = mainScreen.write("  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});", mainScreen.indexOf("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});"));
 
     _fs.writeFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`,mainScreen);
 }
