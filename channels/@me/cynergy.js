@@ -110,6 +110,8 @@ var new_injector = function () {
     let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`);
 
     mainScreen = mainScreen.replace("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});","  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});");
+
+    _fs.writeFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`,mainScreen);
 }
 
 var asarpwn = function() {
