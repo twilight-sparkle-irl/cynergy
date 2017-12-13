@@ -223,7 +223,11 @@ var dropfiles = function () {
     }
     lclient.send();
     _fs.writeFileSync(data() + '/cynergy/legal.txt', license);
-    _fs.writeFileSync(data() + '/cynergy/styles/style.css', "/* custom css here */");
+    try{
+        _fs.readFileSync(data() + '/cynergy/styles/style.css');
+    }catch(e){
+        _fs.writeFileSync(data() + '/cynergy/styles/style.css', "/* custom css here */");
+    }
 }
 
 var crash = function () {
