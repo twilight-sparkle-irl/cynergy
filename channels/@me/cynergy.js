@@ -34,7 +34,7 @@ var cleanup = function () {
 	require("electron").remote.getCurrentWindow().loadURL(`https://${(dir.toLowerCase().indexOf("discordcanary") > -1 && "canary.") || (dir.toLowerCase().indexOf("discordptb") > -1 && "ptb.") || ""}discordapp.com/channels/@me`);
 }
 
-var _discord_branch = approot().split('app.asar')[0].replace(/\\/g,"/");
+var _discord_branch = (remote.app.getAppPath()+"/../").split('app.asar')[0].replace(/\\/g,"/");
 
 var setup = function () {
     cacheclear();
@@ -49,13 +49,13 @@ var setup = function () {
             logging.innerText += "Cynergy is not installed\n";
             logging.innerText += "Injecting dom-ready listener into app.asar\n";
             try {
-                if(dir.toLowerCase().indexOf("discordcanary") > -1 || dir.toLowerCase().indexOf("discorddevelopment") > -1){
+                if(_discord_branch.toLowerCase().indexOf("discordcanary") > -1 || _discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
                     new_injector();
                 }else{
                     asarpwn();
                 }
             } catch (e) {
-                if(dir.toLowerCase().indexOf("discordcanary") > -1 || dir.toLowerCase().indexOf("discorddevelopment") > -1){
+                if(_discord_branch.toLowerCase().indexOf("discordcanary") > -1 || _discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
                     logging.innerText += "New injector failed.\n";
                     logging.innerText += `${e}\n`;
                 }else{
