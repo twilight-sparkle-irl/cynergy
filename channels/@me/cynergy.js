@@ -109,7 +109,7 @@ var new_injector = function () {
     let latestver = dirlisting.filter(d=>d.indexOf("0.0.") > -1);
     let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`);
 
-    mainScreen = mainScreen.write(`  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});`, mainScreen.indexOf("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});"));
+    mainScreen = mainScreen.write("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});", mainScreen.indexOf(`  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});`));
 
     _fs.writeFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`,mainScreen);
 }
