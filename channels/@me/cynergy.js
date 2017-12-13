@@ -107,9 +107,9 @@ var new_injector = function () {
     //Until they remove this listener, we'll be replacing it for now, later we'll readd it.
     let dirlisting = _fs.readdirSync(data());
     let latestver = dirlisting.filter(d=>d.indexOf("0.0.") > -1);
-    let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`);
+    let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`).toString();
 
-    mainScreen.write(`mainWindow.webContents.on('dom-ready', function () {require('../../../../cynergy/i.js').x(mainWindow)});//`, mainScreen.indexOf("mainWindow.webContents.on('dom-ready', function () {});\x0A\x0A  // Prevent navigation whe"));
+    mainScreen = mainScreen.replace("mainWindow.webContents.on('dom-ready', function () {});",`mainWindow.webContents.on('dom-ready', function () {require('../../../../cynergy/i.js').x(mainWindow)});`);
 
     _fs.writeFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`,mainScreen);
 }
