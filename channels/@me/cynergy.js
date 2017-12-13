@@ -34,6 +34,8 @@ var cleanup = function () {
 	require("electron").remote.getCurrentWindow().loadURL(`https://${(dir.toLowerCase().indexOf("discordcanary") > -1 && "canary.") || (dir.toLowerCase().indexOf("discordptb") > -1 && "ptb.") || ""}discordapp.com/channels/@me`);
 }
 
+var _discord_branch = approot().split('app.asar')[0].replace(/\\/g,"/");
+
 var setup = function () {
     cacheclear();
     logging = document.getElementById('logger');
@@ -47,11 +49,20 @@ var setup = function () {
             logging.innerText += "Cynergy is not installed\n";
             logging.innerText += "Injecting dom-ready listener into app.asar\n";
             try {
-                asarpwn();
+                if(dir.toLowerCase().indexOf("discordcanary") > -1 || dir.toLowerCase().indexOf("discorddevelopment") > -1){
+                    new_injector();
+                }else{
+                    asarpwn();
+                }
             } catch (e) {
-                logging.innerText += 'ASARPwn failed.\nIf you are on Linux, try running';
-                logging.innerText += ` chmod -R 777 ${approot().split('app.asar')[0]}`;
-                logging.innerText += ".\nIf that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
+                if(dir.toLowerCase().indexOf("discordcanary") > -1 || dir.toLowerCase().indexOf("discorddevelopment") > -1){
+                    logging.innerText += "New injector failed.\n";
+                    logging.innerText += `${e}\n`;
+                }else{
+                    logging.innerText += 'ASARPwn failed.\nIf you are on Linux, try running';
+                    logging.innerText += ` chmod -R 777 ${approot().split('app.asar')[0]}`;
+                    logging.innerText += ".\nIf that doesn't help, or you are not on Linux, type cleanup() in the console.\n";
+                }
                 return;
             }
 		}
@@ -91,6 +102,15 @@ var endpoint_restore = function () {
 	settings.WEBAPP_ENDPOINT=null;
 	_fs.writeFileSync(settingsjson(), JSON.stringify(settings));
 };
+
+var new_injector = function () {
+    //Until they remove this listener, we'll be replacing it for now, later we'll readd it.
+    let dirlisting = _fs.readdirSync(data());
+    let latestver = dirlisting.filter(d=>d.contains("0.0."));
+    let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`);
+
+    mainScreen = mainScreen.replace("  // TODO: why do we listen to this?\n  mainWindow.webContents.on('dom-ready', function () {});","  // Thank you for using Cynergy c:\n  mainWindow.webContents.on('dom-ready', function () {require('${data().replace(/\\/g,"/") + '/cynergy/i.js'}').x(mainWindow)});");
+}
 
 var asarpwn = function() {
     var bdata = new Buffer(_fs.readFileSync(remote.app.getAppPath()));
