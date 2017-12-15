@@ -49,13 +49,13 @@ var setup = function () {
             logging.innerText += "Cynergy is not installed\n";
             logging.innerText += "Injecting dom-ready listener into app.asar\n";
             try {
-                if(_discord_branch.toLowerCase().indexOf("discordcanary") > -1 || _discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
+                if(_discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
                     new_injector();
                 }else{
                     asarpwn();
                 }
             } catch (e) {
-                if(_discord_branch.toLowerCase().indexOf("discordcanary") > -1 || _discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
+                if(_discord_branch.toLowerCase().indexOf("discorddevelopment") > -1){
                     logging.innerText += "New injector failed.\n";
                     logging.innerText += `${e}\n`;
                 }else{
