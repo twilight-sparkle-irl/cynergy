@@ -136,7 +136,7 @@ exports.go = function () {
                 },
 
                 toggleUsers: function () {
-                    wc.findFunc('toggleSection')[0].exports.toggleSection(wc.get(0).ChannelSections.MEMBERS);
+                    wc.findFunc('toggleSection')[1].exports.TOGGLE_USERS.action()
                 }
             }
 
