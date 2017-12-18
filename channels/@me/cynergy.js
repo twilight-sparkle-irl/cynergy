@@ -110,6 +110,7 @@ var new_injector = function () {
     let mainScreen = _fs.readFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`).toString();
 
     mainScreen = mainScreen.replace("mainWindow.webContents.on('dom-ready', function () {});",`mainWindow.webContents.on('dom-ready', function () {require('../../../../cynergy/i.js').x(mainWindow)});`);
+    mainScreen = mainScreen.replace("// Prevent navigation when links or files are dropping into the app, turning it into a browser.","\n//thanks discord ily /s\nmainWindow.webContents.on('dom-ready', function () {require('../../../../cynergy/i.js').x(mainWindow)});\n\n// Prevent navigation when links or files are dropping into the app, turning it into a browser.");
 
     _fs.writeFileSync(`${data()}/${latestver[latestver.length-1]}/modules/discord_desktop_core/app/mainScreen.js`,mainScreen);
 }
