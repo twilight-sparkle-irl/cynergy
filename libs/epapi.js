@@ -228,7 +228,7 @@ exports.go = function () {
     }
 }
 
-let appdata = el.app.getAppPath().replace(/\\/g,"/");
+let appdata = el.app.getPath('userData').replace(/\\/g,"/");
 
 var settings = {
     get: function (k) {
